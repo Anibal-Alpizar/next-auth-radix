@@ -26,7 +26,6 @@ function SigninForm() {
         <TextField.Input
           type="email"
           placeholder="email@domain.com"
-          autoFocus
         />
       </TextField.Root>
 
@@ -35,7 +34,7 @@ function SigninForm() {
         <TextField.Slot>
           <LockClosedIcon height="16" width="16" />
         </TextField.Slot>
-        <TextField.Input type="password" placeholder="********" autoFocus />
+        <TextField.Input type="password" placeholder="********" />
       </TextField.Root>
 
       <Button>Sign In</Button>
