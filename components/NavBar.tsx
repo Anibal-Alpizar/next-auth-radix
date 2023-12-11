@@ -13,11 +13,13 @@ import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useSession, signOut } from "next-auth/react";
 
 function NavBar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   console.log(session);
 
+  if (status === "loading") return null;
+
   return (
-    <nav className="bg-zinc-950 py-4">
+    <nav className="px-10 md:px-0 bg-zinc-950 py-4">
       <Container>
         <Flex justify="between" align="center">
           <Link href="/">
