@@ -11,8 +11,12 @@ import {
 } from "@radix-ui/themes";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { useRouter, useParams } from "next/navigation";
+import { TrashIcon } from "@radix-ui/react-icons";
 
 function TaskNewPage() {
+  const router = useRouter();
+  const params = useParams();
   const { control, handleSubmit } = useForm({
     values: {
       title: "",
@@ -21,9 +25,14 @@ function TaskNewPage() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-    const res = await axios.post(`/api/projects`, data);
-    console.log(res);
+    if (!params.projectId) {
+      const res = await axios.post(`/api/projects`, data);
+      if (res.status === 200) {
+        router.push(`/dashboard/`);
+        router.refresh();
+      }
+    } else {
+    }
   });
 
   return (
@@ -31,7 +40,9 @@ function TaskNewPage() {
       <Container size="1" height="100%" className="p-3 md:p-0">
         <Flex className="h-screen w-full items-center">
           <Card className="w-full p-7">
-            <Heading> Create New Task</Heading>
+            <Heading>
+              {params.projectId ? "Edit Project" : "New Project"}
+            </Heading>
             <form onSubmit={onSubmit} className="flex flex-col gap-y-2">
               <label>Project Title</label>
               <Controller
@@ -62,8 +73,18 @@ function TaskNewPage() {
                   );
                 }}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">
+                {params.projectId ? "Edit" : "Create"}
+              </Button>
             </form>
+            <div className="flex justify-end my-4">
+              {params.projectId && (
+                <Button color="red" className="mt-4">
+                  <TrashIcon />
+                  Delete
+                </Button>
+              )}
+            </div>
           </Card>
         </Flex>
       </Container>
